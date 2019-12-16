@@ -1,0 +1,12 @@
+{
+  "name": "funcjs-web",
+  "version": "0.1",
+  "description": "Azure function for testing mTLS for API call authorization.",
+  "scripts": {
+    "test": "echo \"No tests yet...\""
+  },
+  "author": "Travis Nielsen",
+  "dependencies": {
+    "node-forge": "^0.9.1"
+  }
+}
