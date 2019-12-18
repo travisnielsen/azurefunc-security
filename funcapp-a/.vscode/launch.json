@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach to Node Functions",
+            "name": "Attach to funcapp-a",
             "type": "node",
             "request": "attach",
-            "port": 9229,
+            "port": 9228,
             "preLaunchTask": "func: host start"
         }
     ]
