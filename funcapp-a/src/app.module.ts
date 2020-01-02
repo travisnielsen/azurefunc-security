@@ -8,8 +8,6 @@ import { MtlsMiddleware } from './mtls.middleware'
   controllers: [OrdersController],
   providers: [OrderService],
 })
-export class AppModule {}
-/*
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
@@ -17,4 +15,3 @@ export class AppModule implements NestModule {
       .forRoutes({ path: '*', method: RequestMethod.ALL})
   }
 }
-*/

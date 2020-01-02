@@ -1,0 +1,22 @@
+@startuml security-layers
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_LEFT_RIGHT
+
+skinparam rectangle {
+    roundCorner 25
+    BackgroundColor<<subscriptionPolicy>> White
+    ' fontcolor<<subscriptionPolicy>> #FFFFFF
+    ' ClassFontColor<<subscriptionPolicy>> White
+    BackgroundColor<<platformControls>> AliceBlue
+    BackgroundColor<<dataContext>> PowderBlue
+}
+
+rectangle "Platform configuration standards" <<subscriptionPolicy>> {
+    rectangle "Application security controls" <<platformControls>> as platformsec {
+        rectangle "Data authorization rules" <<dataContext>> as dataContext { 
+        }   
+    }
+}
+
+@enduml
