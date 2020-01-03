@@ -24,10 +24,10 @@ title Reference Design Option 1
 
 skinparam Rectangle {
     BorderColor<<virtualNetwork>> Green
-    BackgroundColor<<virtualNetwork>> AliceBlue
+    BackgroundColor<<virtualNetwork>> White
     BorderColor<<subnet>> Green
     ' BorderColor<<networkAcls>> Blue
-    BackgroundColor<<subnet>> #b3d9ff
+    BackgroundColor<<subnet>> #CCFFB3
     BorderColor<<azurePolicy>> Green
     BorderColor<<networkAcl>> Green
     BackgroundColor<<networkAcl>> White
@@ -35,11 +35,11 @@ skinparam Rectangle {
 
 Rectangle "Control Fabric\n<color:green><$AzureVirtualNetwork>\n" as privateNetwork <<virtualNetwork>> {
 
-    Rectangle "api-gateway" <<subnet>> #line.dotted {
+    Rectangle "api-gateway" <<subnet>> {
         AzureAPIManagement(apim, "apim01", "Premium (99.95% SLA) > 4000 req / sec", "<color:#ae0001>Mandatory API policy checks")
     }
 
-    Rectangle "appsvc" <<subnet>> #line.dotted {
+    Rectangle "appsvc" <<subnet>> {
         ' agent "Profile endpoint" as func1endpoint
         agent "Notifications endpoint" as func2endpoint
     }
@@ -47,17 +47,16 @@ Rectangle "Control Fabric\n<color:green><$AzureVirtualNetwork>\n" as privateNetw
 
 Rectangle "Functions Premium Plan" as computePool <<compuePool>> {
     AzureFunction(func1, "Profile", "Function App")
-    rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>subnet1</b> only" as func1fw <<networkAcl>>
+    rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>api-gateway</b> only" as func1fw <<networkAcl>>
     AzureFunction(func2, "Notifications", "Function App")
-    rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>subnet1</b> only" as func2fw <<networkAcl>>
-
+    rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>api-gateway</b> only" as func2fw <<networkAcl>>
     rectangle "<b>Data authorization</b>\n<color:#ae0001><$AzureFunction>\n<i>[Function App]</i>\n<color:#ae0001>User consent and data access policies" as func3 <<AzureFunction>>
-    rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>subnet1</b> only" as func3fw <<networkAcl>>
+    rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>api-gateway</b> only" as func3fw <<networkAcl>>
 }
 
 ' AzureCosmosDb(cosmosdb, "Profile database", "")
 AzureEventHub(eventhub, "Notifications", "", "")
-rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>subnet2</b> only" as eventhubfw <<networkAcl>>
+rectangle "<b>Function App Firewall</b>\n<color:green><$AzureVPNGateway>\nInbound from <b>appsvc</b> only" as eventhubfw <<networkAcl>>
 
 Person(internetUser, "Internet client")
 AzureActiveDirectory(aad, "OAuth", "API registrations and scope assignments")
@@ -85,8 +84,12 @@ func2endpoint --> eventhub
 Rel(func2, aad, "Managed Identity")
 Rel_Back(func2, aad, "Access token")
 Rel(apim, func1, "Connection context:\nAPIM client certificate\nAccess token")
-Rel(apim, func3, "Policy check:\nAPIM client certificate\nAPIM Access token\nRequest data")
-Rel_Back(apim, func3, "Policy response")
+' Rel(apim, func3, "Policy check:\nAPIM client certificate\nAPIM Access token\nRequest data")
+' Rel_Back(apim, func3, "Policy response")
+
+apim -[#ae0001]-> func3: "<color:#ae0001><b>Policy check</b>\nAPIM client certificate\nAPIM Access token\nRequest data"
+apim <-[#ae0001]- func3: "<color:#ae0001><b>Policy response</b>"
+
 Rel(func2, func2endpoint, "Get preferences")
 Rel(func2endpoint, apim, "Access token")
 
