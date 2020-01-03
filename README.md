@@ -36,7 +36,7 @@ The three layers of the above conceptual security model are realized in Azure th
 
 The following diagram illustrates how these compoents interface:
 
-<img src="docs/img/deployment-option1.png" width="850"/>
+<img src="docs/img/deployment-option1.png" width="900"/>
 
 Further documentation and implementation scripts can be found on the following pages:
 
