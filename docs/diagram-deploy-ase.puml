@@ -1,4 +1,4 @@
-@startuml deployment-option1
+@startuml deployment-option2
 
 !define AzurePuml https://raw.githubusercontent.com/RicardoNiepel/Azure-PlantUML/release/2-1/dist
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
@@ -20,7 +20,7 @@
 
 LAYOUT_LEFT_RIGHT
 
-title Reference Design Option 1
+title Reference Design Option 2: App Service Environment
 
 skinparam Rectangle {
     BorderColor<<virtualNetwork>> Green

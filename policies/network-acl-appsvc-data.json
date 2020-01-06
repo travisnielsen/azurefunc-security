@@ -1,0 +1,17 @@
+{
+    "if": {            
+        "allOf": [
+            {
+                "field": "type",
+                "equals": "Microsoft.Web/sites"
+            },
+            {     
+                "not": {
+                    "field": "Microsoft.Web/sites/siteConfig.ipSecurityRestrictions[*].vnetSubnetResourceId",
+                    "in": "[parameters('approvedSubnets')]"
+                }           
+            }
+        ]
+    },
+    "then": { "effect": "deny" }
+}

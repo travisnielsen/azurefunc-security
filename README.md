@@ -28,6 +28,7 @@ The three layers of the above conceptual security model are realized in Azure th
 | Platform Configuration | Azure Policy               | Enforce Azure SKUs. Mandate VNET injected services and block Internet connectivity |
 | Application Security   | App Services > Mutual TLS  | Allow only authenticated network connections. Forward client certificates.         |
 | Application Security   | Azure Functions Premium    | HTTP triggers from private VNET w/ access to resources in a private VNET           |
+| Application Security   | App Services Environment   | Fully private and dedicated instance of App Services injected into a VNET          |
 | Application Security   | Application middleware     | Authorize network connection based on client certificate                           |
 | Application Security   | Managed Identity           | Authorize API calls via OAuth                                                      |
 | Application Security   | Azure API Management       | Centralized data and control plane for microservices                               |
@@ -40,6 +41,7 @@ The following diagram illustrates how these compoents interface:
 
 Further documentation and implementation scripts can be found on the following pages:
 
-* [Platform Configuration Standards](docs/1-plat-config-stds.md)
-* [Application Security Controls](docs/2-app-sec-controls.md)
+* [Platform Configuration Standards](docs/1-plat-configstds.md)
+* [Application Security Controls - App Services](docs/2-app-security-appsvc.md)
+* [Application Security Controls - App Service Environment](docs/2-app-security-ase.md)
 * [Data Authorization Rules](docs/3-data-auth-rules)

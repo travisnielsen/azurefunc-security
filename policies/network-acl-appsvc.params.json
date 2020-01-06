@@ -1,0 +1,6 @@
+{
+    "approvedSubnets": {
+        "type": "Array",
+        "metadata": { "description": "List of resource IDs of approved VNET subnets" }
+    }
+}

@@ -10,11 +10,14 @@
 			"path": "docs"
 		},
 		{
-			"path": "cert"
+			"path": "certs"
 		},
 		{
-			"path": "scripts"
-		}
+			"path": "policies"
+		},
+		{
+			"path": "deployments"
+		},	
 	],
 	"settings": {
 		"debug.internalConsoleOptions": "neverOpen"
