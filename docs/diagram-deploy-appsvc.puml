@@ -20,7 +20,7 @@
 
 LAYOUT_LEFT_RIGHT
 
-title Reference Design Option 1: App Service
+title Reference Design Option 1: Functions Premium
 
 skinparam Rectangle {
     BorderColor<<virtualNetwork>> Green
@@ -36,7 +36,7 @@ skinparam Rectangle {
 Rectangle "Control Fabric\n<color:green><$AzureVirtualNetwork>\n" as privateNetwork <<virtualNetwork>> {
 
     Rectangle "api-gateway" <<subnet>> {
-        AzureAPIManagement(apim, "apim01", "Premium (99.95% SLA) > 4000 req / sec", "<color:#ae0001>Mandatory API policy checks")
+        AzureAPIManagement(apim, "apim01", "Premium (99.9% SLA) > 4000 req / sec", "<color:#ae0001>Mandatory API policy checks")
     }
 
     Rectangle "appsvc" <<subnet>> {
@@ -62,7 +62,11 @@ Person(internetUser, "Internet client")
 AzureActiveDirectory(aad, "OAuth", "API registrations and scope assignments")
 AzureApplicationInsights(appInsights, "Telemetry and logging", "Alerts")
 AzurePipelines(pipelines, "SDLC components", "Scan for middleware", "Deployment automation")
-rectangle "<b>Configuration standards</b>\n<color:green><$AzurePolicy>\nBlock Internet access" <<azurePolicy>>
+rectangle "<b>Configuration standards</b>\n<color:green><$AzurePolicy>\nBlock Internet access" <<azurePolicy>> as azpolicy
+
+appInsights -[#FFF]- pipelines
+pipelines -[#FFF]- azpolicy
+
 
 func1 -- func1fw
 func2 -- func2fw

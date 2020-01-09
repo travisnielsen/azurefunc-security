@@ -17,7 +17,7 @@ From an operational perspectice, the security model is organized into the follow
 
 <img src="docs/img/security-layers.png" width="300"/>
 
-In the outer layer, *platform configuration standards* represent baseline governance controls that are applied enterprise-wide via policies, regardless of the workload type. These policies enforce settings for most services used by the architecture. The *application security controls* layer represents the architecture and configurations of the application itself and its surroundoing lifecycle activities. For microservices, this could mean adherence to concepts like [Zero Trust Security](https://www.microsoft.com/en-us/security/zero-trust), secure development lifecycle workflows, and aligment to specific threat models. Finally, the *data authorization* layer is responsible for ensuring all operations are executed within a legitimate and approved context. In this layer, factors such as user consent and industry compliance requirements are taken into account.
+In the outer layer, *platform configuration standards* represent baseline governance controls, many of which can be applied enterprise-wide via policies regardless of the workload type. These policies enforce settings for most services used by the architecture. The *application security controls* layer represents the architecture and configurations of the application itself and its surroundoing lifecycle activities. For microservices, this could mean adherence to concepts like [Zero Trust Security](https://www.microsoft.com/en-us/security/zero-trust), secure development lifecycle workflows, logical segmentation of services, and aligment to specific threat models. Finally, the *data authorization* layer is responsible for ensuring all operations are executed within a legitimate and approved context. In this layer, factors such as user consent and industry compliance requirements are taken into account.
 
 ## Deployment Model
 
@@ -25,7 +25,8 @@ The three layers of the above conceptual security model are realized in Azure th
 
 | Layer                  | Component                  | Security Capabilities                                                              |
 |------------------------|:---------------------------|------------------------------------------------------------------------------------|
-| Platform Configuration | Azure Policy               | Enforce Azure SKUs. Mandate VNET injected services and block Internet connectivity |
+| Platform Configuration | Azure Policy               | Enforce Azure SKUs. Mandatory PaaS service settings                                |
+| Platform Configuration | Network Security Groups    | Ingress and egress network topology and controls. Network level segmentation.      |
 | Application Security   | App Services > Mutual TLS  | Allow only authenticated network connections. Forward client certificates.         |
 | Application Security   | Azure Functions Premium    | HTTP triggers from private VNET w/ access to resources in a private VNET           |
 | Application Security   | App Services Environment   | Fully private and dedicated instance of App Services injected into a VNET          |
@@ -35,13 +36,17 @@ The three layers of the above conceptual security model are realized in Azure th
 | Application Security   | Application Insights       | Monitor network connections. Customized alerts. Application telemetry.             |
 | Data Authorization     | Data authorization service | Custom service for evaluating application API calls                                |
 
-The following diagram illustrates how these compoents interface:
+Two deployment topologies are under consideration in this repository. The first leverages Azure Functions Premium for hosting microservices as shown in the followign diagram:
 
-<img src="docs/img/deployment-option1.png" width="900"/>
+<img src="docs/img/deployment-option1.png" width="850"/>
 
-Further documentation and implementation scripts can be found on the following pages:
+The second deployment makes use of Azure's fully private PaaS offering, [App Service Environment](https://docs.microsoft.com/en-us/azure/app-service/environment/intro) (ASE). Because ASE is a fully private compute environment for hosting Functions, network segmentation controls are simplified.
+
+<img src="docs/img/deployment-option2.png" width="850"/>
+
+
+Further documentation, including deployment scripts can be found on the following pages:
 
 * [Platform Configuration Standards](docs/1-plat-configstds.md)
-* [Application Security Controls - App Services](docs/2-app-security-appsvc.md)
-* [Application Security Controls - App Service Environment](docs/2-app-security-ase.md)
+* [Application Security Controls](docs/2-app-security.md)
 * [Data Authorization Rules](docs/3-data-auth-rules)

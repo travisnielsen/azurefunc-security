@@ -1,6 +1,6 @@
 # Application Security Design
 
-## Deployment
+## Deployment (Functions Premium)
 
 Run the following command to deploy the sample Function Apps
 
@@ -10,3 +10,4 @@ az group create -l centralus -n functest
 az group deployment create --resource-group functest --template-file scripts/functionapp.json
 ```
 
+## Deployment (App Service Environment)
