@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "funcapp-a"
+			"path": "funcapp-orders"
 		},
 		{
-			"path": "funcapp-b"
+			"path": "funcapp-delivery"
 		},
 		{
 			"path": "docs"
@@ -28,8 +28,8 @@
             {
                 "name": "Attach to both apps",
                 "configurations": [
-                    "Attach to funcapp-a",
-                    "Attach to funcapp-b"
+                    "Attach to funcapp-orders",
+                    "Attach to funcapp-delivery"
                 ]
             }
         ]

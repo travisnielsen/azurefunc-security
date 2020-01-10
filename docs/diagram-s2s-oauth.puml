@@ -1,0 +1,34 @@
+@startuml s2s-oauth
+
+!define AzurePuml https://raw.githubusercontent.com/RicardoNiepel/Azure-PlantUML/release/2-1/dist
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Identity/AzureActiveDirectory.puml
+' !includeurl AzurePuml/Security/AzureKeyVault.puml
+' !includeurl AzurePuml/Networking/AzureTrafficManager.puml
+!includeurl AzurePuml/Web/AzureAPIManagement.puml
+' !includeurl AzurePuml/Compute/AzureAppService.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+
+' !includeurl AzurePuml/DevOps/AzureApplicationInsights.puml
+' !includeurl AzurePuml/DevOps/AzurePipelines.puml
+' !includeurl AzurePuml/Management/AzurePolicy.puml
+
+
+LAYOUT_LEFT_RIGHT
+
+title Service-to-Service Authorization (OAuth)
+
+AzureActiveDirectory(aad, "OAuth", "API scopes and authorizations")
+AzureAPIManagement(apim, "apim01", "Premium (99.9% SLA) > 4000 req / sec", "")
+AzureFunction(func1, "Delivery", "Function App", "Managed Identity (system)")
+AzureFunction(func2, "Orders", "Function App", "Authorize based on API scope")
+
+Rel(func1, aad, "1. Request Access Token\nManaged Identity\nResource: api://orders")
+Rel_Back(func1, aad, "2. Access Token\n'aud:api://orders'\n'scope: orders.read'")
+
+Rel(func1, apim, "3. Request order status\nAccess Token")
+Rel(apim, aad, "4. Validate token")
+Rel_Back(func2, apim, "5. Proxied call\nAccess Token")
+
+@end

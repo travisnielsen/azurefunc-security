@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to funcapp-a",
+      "name": "Attach to funcapp-orders",
       "type": "node",
       "request": "attach",
       "port": 9228,

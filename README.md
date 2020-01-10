@@ -25,15 +25,15 @@ The three layers of the above conceptual security model are realized in Azure th
 
 | Layer                  | Component                  | Security Capabilities                                                              |
 |------------------------|:---------------------------|------------------------------------------------------------------------------------|
-| Platform Configuration | Azure Policy               | Enforce Azure SKUs. Mandatory PaaS service settings                                |
-| Platform Configuration | Network Security Groups    | Ingress and egress network topology and controls. Network level segmentation.      |
-| Application Security   | App Services > Mutual TLS  | Allow only authenticated network connections. Forward client certificates.         |
-| Application Security   | Azure Functions Premium    | HTTP triggers from private VNET w/ access to resources in a private VNET           |
-| Application Security   | App Services Environment   | Fully private and dedicated instance of App Services injected into a VNET          |
-| Application Security   | Application middleware     | Authorize network connection based on client certificate                           |
-| Application Security   | Managed Identity           | Authorize API calls via OAuth                                                      |
-| Application Security   | Azure API Management       | Centralized data and control plane for microservices                               |
-| Application Security   | Application Insights       | Monitor network connections. Customized alerts. Application telemetry.             |
+| Platform  | Azure Policy               | Enforce Azure SKUs. Mandatory PaaS service settings                                |
+| Platform  | Network Security Groups    | Ingress and egress network topology and controls. Network level segmentation.      |
+| Application    | App Services > Mutual TLS  | Allow only authenticated network connections. Forward client certificates.         |
+| Application    | Azure Functions Premium    | HTTP triggers from private VNET w/ access to resources in a private VNET           |
+| Application    | App Services Environment   | Fully private and dedicated instance of App Services injected into a VNET          |
+| Application    | Application middleware     | Authorize network connection based on client certificate                           |
+| Application    | Managed Identity           | Authorize API calls via OAuth                                                      |
+| Application    | Azure API Management       | Centralized data and control plane for microservices                               |
+| Application    | Application Insights       | Monitor network connections. Customized alerts. Application telemetry.             |
 | Data Authorization     | Data authorization service | Custom service for evaluating application API calls                                |
 
 Two deployment topologies are under consideration in this repository. The first leverages Azure Functions Premium for hosting microservices as shown in the followign diagram:
@@ -44,9 +44,9 @@ The second deployment makes use of Azure's fully private PaaS offering, [App Ser
 
 <img src="docs/img/deployment-option2.png" width="850"/>
 
-
 Further documentation, including deployment scripts can be found on the following pages:
 
 * [Platform Configuration Standards](docs/1-plat-configstds.md)
-* [Application Security Controls](docs/2-app-security.md)
+* [Application Security Controls - Service-to-service authorization](docs/2-app-security-s2sauthz.md)
+* [Application Security Controls - Connection segmentation](docs/2-app-security-s2sauthz.md)
 * [Data Authorization Rules](docs/3-data-auth-rules)
