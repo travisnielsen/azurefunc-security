@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "ms-rest-azure": "^3.0.0",
+    "request": "^2.88.0",
     "tslib": "^1.10.0"
   }
 }

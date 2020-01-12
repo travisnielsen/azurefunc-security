@@ -30,6 +30,13 @@
         "metadata": {
           "description": "The language worker runtime to load in the function app."
         }
+      },
+      "applicationInsightsName": {
+        "type": "string",
+        "defaultValue": "funcdemo",
+        "metadata": {
+          "description": "The name of the Application Insights instance to connect the Function App to"
+        }
       }
     },
     "variables": {
@@ -70,6 +77,9 @@
         "type": "Microsoft.Web/sites",
         "name": "[variables('functionAppName')]",
         "location": "[parameters('location')]",
+        "identity": {
+          "type":"SystemAssigned"
+        },
         "kind": "functionapp",
         "dependsOn": [
           "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
@@ -107,22 +117,16 @@
                 "name": "FUNCTIONS_WORKER_RUNTIME",
                 "value": "[variables('functionWorkerRuntime')]"
               }
-            ],
-            "ipSecurityRestrictions": [
-              {
-                "vnetSubnetResourceId": "/subscriptions/cecea5c9-0754-4a7f-b5a9-46ae68dcafd3/resourceGroups/net-std/providers/Microsoft.Network/virtualNetworks/us-central-spoke1/subnets/vms",
-                "action": "Allow",
-                "tag": "Default",
-                "priority": 110,
-                "description": "Allow from vnet"
-              }
             ]
-          }
+          },
+          "clientCertEnabled": true,
+          "httpsOnly": true,
+          "minTlsVersion": "1.2"
         }
       },
       {
         "apiVersion": "2015-05-01",
-        "name": "[variables('applicationInsightsName')]",
+        "name": "[parameters('applicationInsightsName')]",
         "type": "microsoft.insights/components",
         "location": "centralus",
         "tags": {

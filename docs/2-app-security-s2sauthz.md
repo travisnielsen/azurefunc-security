@@ -28,6 +28,20 @@ az ad sp list --display-name <function-app-name> --query '[].{name:appDisplayNam
 
 Save the GUID for the entry that matches the name of your *delivery* Function App.
 
+### Create Service Principal for local testing
+
+Create a Service Principal if you need to test locally:
+
+```bash
+az ad sp create-for-rbac -n "delivery-testsp" --skip-assignment
+```
+
+Make sure you save the output information for future reference. Finally, run the following command to get the ObjectID of the test Service Principal:
+
+```bash
+az ad sp list --display-name 'delivery-testsp' --query '[].{name:appDisplayName,objectId:objectId}' -o tsv
+```
+
 ### Register API, define and assign permissions
 
 In order to establish OAuth-based API security services deployed to the **orders** Function App, it must be registered in Azure Active Directory as an application. To do so, use the following CLI command:
@@ -63,9 +77,49 @@ Finally, execute the following command to link the Managed Identity of the *deli
 New-AzureADServiceAppRoleAssignment -ObjectId <delivery-sp-objectid> -PrincipalId <delivery-sp-objectid> -Id <orders-approle-id> -ResourceId <orders-app-serviceprincipal-objectid>
 ```
 
-## Publish Orders API
+If with to assign permission to the API scope to a test service principal, execute the same command but with the Object ID of the test service principal 
 
-TBD
+## Add token validation and access control checks to API Management
+
+In API Management, navigate to the Orders API. Ensure the **getOrders** operation is highlighted and click the XML edit button to update the policy at **Inbound processing**. Add the following XML within the `<inbound>` element.
+
+```XML
+<inbound>
+  <base/>
+  <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+      <openid-config url="https://sts.windows.net/<your-tenant-ID>/.well-known/openid-configuration" />
+      <required-claims>
+          <claim name="aud" match="all">
+              <value>api://svc-orders</value>
+          </claim>
+          <claim name="roles" match="any">
+              <value>Orders.Read</value>
+          </claim>
+      </required-claims>
+  </validate-jwt>
+</inbound>
+```
+
+Next, do the same for the **createOrder** operation and update the policies in the `<inbound>` section of the XML as follows.
+
+```XML
+<inbound>
+    <base />
+    <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+        <openid-config url="https://sts.windows.net/<your-tenant-ID>/.well-known/openid-configuration" />
+        <required-claims>
+            <claim name="aud" match="all">
+                <value>api://svc-orders</value>
+            </claim>
+            <claim name="roles" match="any">
+                <value>Orders.Create</value>
+            </claim>
+        </required-claims>
+    </validate-jwt>
+</inbound>
+```
+
+Once implemented this way in APIM, only AAD-registered applications with valid access tokens that have a matching audience (aud) claim as well as the required application role can make the call.
 
 ## Testing
 
