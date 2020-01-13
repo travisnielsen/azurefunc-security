@@ -6,13 +6,19 @@ export default function(context: Context, req: HttpRequest): void {
 
   console.info("Orders API invoked")
 
-  if (process.env['X-MS-CLIENT-PRINCIPAL-NAME']) {
+  if (req.headers['x-ms-client-principal-name']) {
     console.info("App Service AAD Authorization is enabled. Header values:")
-    console.info("X-MS-CLIENT-PRINCIPAL-NAME: " + process.env['X-MS-CLIENT-PRINCIPAL-NAME']);
-    console.info("X-MS-CLIENT-PRINCIPAL-ID: " + process.env['X-MS-CLIENT-PRINCIPAL-ID']);
-    console.info("X-MS-TOKEN-AAD-ID-TOKEN: " + process.env['X-MS-TOKEN-AAD-ID-TOKEN']);
-    console.info("X-MS-TOKEN-AAD-ACCESS-TOKEN: " + process.env['X-MS-TOKEN-AAD-ACCESS-TOKEN']);
-    console.info("X-MS-TOKEN-AAD-EXPIRES-ON: " + process.env['X-MS-TOKEN-AAD-EXPIRES-ON']);
+    console.info("X-MS-CLIENT-PRINCIPAL-NAME: " + req.headers['x-ms-client-principal-name']);
+    console.info("X-MS-CLIENT-PRINCIPAL-ID: " + req.headers['x-ms-client-principal-id']);
+    console.info("X-MS-TOKEN-AAD-ID-TOKEN: " + req.headers['X-MS-TOKEN-AAD-ID-TOKEN']);
+    console.info("X-MS-TOKEN-AAD-ACCESS-TOKEN: " + req.headers['X-MS-TOKEN-AAD-ACCESS-TOKEN']);
+    console.info("X-MS-TOKEN-AAD-EXPIRES-ON: " + req.headers['X-MS-TOKEN-AAD-EXPIRES-ON']);
+  }
+
+  if (req.headers['X-MS-CLIENT-PRINCIPAL-NAME']) {
+    console.info("App Service AAD Authorization is enabled. Header values:")
+    console.info("X-MS-CLIENT-PRINCIPAL-NAME: " + req.headers['X-MS-CLIENT-PRINCIPAL-NAME']);
+    console.info("X-MS-CLIENT-PRINCIPAL-ID: " + req.headers['X-MS-CLIENT-PRINCIPAL-ID']);
   }
   
   AzureHttpAdapter.handle(createApp, context, req);
