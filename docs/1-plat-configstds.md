@@ -48,6 +48,8 @@ Please see [this sample](https://github.com/Azure/azure-quickstart-templates/tre
 
 Once APIM is deployed, import the sample client certificate provided in the `certs` folder. This can be done by navigating to the Azure Portal and selecting the **Certificates** section. Click **Add** and upload `client-cert.pfx`. The password for this file is: 3@6AagBD
 
+Finally, ensure Managed Identity is enabled on the APIM instance. This can be done in the Azure Portal by selecting the *Managed Identites* section under *Settings*. Set the *Status* toggle to *On* and document the `Object ID` once the configuration is completed. You will need this for locking down Function App inbound connections in the next section. 
+
 ### Deploy code
 
 Use VS Code to publish each Function App in this repository to its respective instance in Azure.
@@ -62,23 +64,19 @@ The certificate validation is perfomed in the nodejs code and with values provid
 * CERT_SUBJECT : `apimanagement`
 * CERT_THUMBPRINT : `E6EAE966BE935167AF3E41273D1636C4DEAC4B90`
 * WEBSITE_NODE_DEFAULT_VERSION : `~12`
-* APIM_SUBSCRIPTION_KEY: `<subscription-key>`
 
 For local debugging, you will need to add the same entries to your `local.settings.json` file as shown in this example:
 
 ```json
 {
-  "IsEncrypted": false,
-  "Values": {
-    "FUNCTIONS_WORKER_RUNTIME": "node",
-    "TOKEN_AUDIENCE": "api://svc-orders",
-    "CLIENT_ID": "<your-client-id>",
-    "CLIENT_SECRET": "<your-client-secret>",
-    "CLIENT_TENANT": "<your-tenant-id>",
-    "ORDER_API_URL": "https://trniel.azure-api.net/demo/orders",
-    "APIM_SUBSCRIPTION_KEY": "<your-apim-key>"
-  },
-  "ConnectionStrings": {}
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "CERT_ISSUER" : "apimanagement",
+    "CERT_SUBJECT" : "apimanagement",
+    "CERT_THUMBPRINT" : "E6EAE966BE935167AF3E41273D1636C4DEAC4B90"
+  }
 }
 ```
 

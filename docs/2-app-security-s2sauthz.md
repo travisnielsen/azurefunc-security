@@ -121,6 +121,6 @@ Next, do the same for the **createOrder** operation and update the policies in t
 
 Once implemented this way in APIM, only AAD-registered applications with valid access tokens that have a matching audience (aud) claim as well as the required application role can make the call.
 
-## Testing
+## Restrict Inbound connections to the APIM Managed Identity on Function Apps
 
-TBD
+As indicated in Step 5 of the above diagram, APIM's Managed Identity can be used as an alternative to 
